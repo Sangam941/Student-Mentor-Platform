@@ -1,59 +1,50 @@
-import dotenv from 'dotenv';
-import connectDB from './config/db.js';
-import User from './models/UserModel.js';
-import bcrypt from 'bcrypt';
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import connectDB from "./config/db.js";
+import User from "./models/UserModel.js";
+import UserModel from "./models/UserModel.js";
 
-// Load environment variables
+// Load env variables
 dotenv.config();
 
-// Seed admin user
 const seedAdmin = async () => {
-    try {
-        // Connect to database
-        await connectDB();
+  try {
+    // Connect DB
+    await connectDB();
 
-        // Admin user details
-        const adminData = {
-            user_id: 'ADM001',
-            password: 'admin123', // Default password - change this if needed
-            role: 'admin'
-        };
-
-        // Check if admin already exists
-        const existingAdmin = await User.findOne({ user_id: adminData.user_id });
-
-        if (existingAdmin) {
-            return res.status(409).json({
-                success: false,
-                message: 'Admin user already exists',
-                existingAdmin
-            });
-        }
-
-        // Hash the password
-        const password_hash = await bcrypt.hash(adminData.password, 10);
-
-        // Create admin user
-        const admin = await User.create({
-            user_id: adminData.user_id,
-            password_hash: password_hash,
-            role: adminData.role
-        });
-
-        return res.status(201).json({
-            success: true,
-            message: 'Admin user created successfully',
-            admin
-        });
-
-
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: 'Error seeding admin user',
-            error: error.message
-        });
+    const adminData = {
+      "admin_Id" : "26ADM001",
+      "email" : "admin@gmail.com",
+      "password": "admin123",
+      "role" : "admin"
     }
+
+    // Check if admin already exists
+    const adminExists = await User.findOne({ user_id: adminData.admin_Id });
+
+    if (adminExists) {
+      console.log("⚠️ Admin already exists. Seed skipped.");
+      process.exit(0);
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(adminData.password, 10);
+
+    // Create admin
+    await UserModel.create({
+      user_id: adminData.admin_Id,
+      email: adminData.email,
+      password: hashedPassword,
+      role: adminData.role
+    });
+
+    console.log("✅ Admin seeded successfully!");
+    process.exit(0);
+
+  } catch (error) {
+    console.error("❌ Admin seed failed:", error.message);
+    process.exit(1);
+  }
 };
 
 seedAdmin();

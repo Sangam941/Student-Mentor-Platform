@@ -6,11 +6,24 @@ const StudentSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
+    email : {
+        type: String,
+        unique: true,
+        required: true
+    },
+    password:{
+        type:String
+    },
     name: {
         type: String
     },
     photo: {
-        type: String
+        id: {
+            type: String
+        },
+        url: {
+            type: String
+        }
     },
     mentor_id: {
         type: String,
@@ -23,10 +36,12 @@ const StudentSchema = new mongoose.Schema({
     },
     social_links: {
         github: {
-            type: String
+            type: String,
+            default: ""
         },
         linkedin: {
-            type: String
+            type: String,
+            default: ""
         }
     },
     warning_count: {

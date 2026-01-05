@@ -31,7 +31,7 @@ const isAuthenticated = async (req, res, next) => {
         const decoded = jwt.verify(token, secret);
 
         // Get user from database using user_id
-        const user = await User.findOne({ user_id: decoded.user_id });
+        const user = await User.findOne({ user_id: decoded.id });
 
         if (!user) {
             return res.status(401).json({

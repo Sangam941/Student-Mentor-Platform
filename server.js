@@ -1,8 +1,11 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import connectDB from './config/db.js';
-import { v2 as cloudinary } from 'cloudinary';
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import connectDB from './config/db.js'
+import { v2 as cloudinary } from 'cloudinary'
+import AdminRoute from './routes/AdminRoute.js'
+import AuthRoute from './routes/AuthRoute.js'
+import MentorRoute from './routes/MentorRoute.js'
 
 // Load environment variables
 dotenv.config();
@@ -24,12 +27,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basic route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Mentor Management System API' });
-});
-
-
+app.use("/api/auth", AuthRoute)
+app.use("/api/admin", AdminRoute)
+app.use("/api/mentor", MentorRoute);
 
 // Start server
 app.listen(PORT, () => {

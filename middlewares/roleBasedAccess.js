@@ -38,4 +38,5 @@ export default roleBasedAccess;
 export const adminOnly = roleBasedAccess("admin");
 export const mentorOnly = roleBasedAccess("mentor");
 export const studentOnly = roleBasedAccess("student");
+export const adminAndMentor = roleBasedAccess("admin", "mentor");
 

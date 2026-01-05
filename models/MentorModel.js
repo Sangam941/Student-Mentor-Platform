@@ -7,6 +7,12 @@ const MentorSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    email:{
+        type:String,
+    },
+    password: {
+        type:String,
+    },
     name: {
         type: String,
         required: true
